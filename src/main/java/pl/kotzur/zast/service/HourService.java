@@ -1,7 +1,6 @@
 package pl.kotzur.zast.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.kotzur.zast.model.entity.Hour;
 import pl.kotzur.zast.repository.HourRepository;
