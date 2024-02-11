@@ -1,8 +1,6 @@
 package pl.kotzur.zast.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +15,8 @@ import java.util.Collection;
 public class Person {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_generator")
+    @SequenceGenerator(name = "person_generator", sequenceName = "person_id_seq", allocationSize=1)
     private Long id;
     private String firstName;
     private String secondName;

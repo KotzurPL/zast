@@ -9,7 +9,8 @@ import pl.kotzur.zast.util.RoleEnum;
 public class Role {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_generator")
+    @SequenceGenerator(name = "role_generator", sequenceName = "role_id_seq", allocationSize=1)
     private Long id;
 
     private String name;

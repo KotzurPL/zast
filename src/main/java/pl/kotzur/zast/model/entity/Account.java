@@ -20,7 +20,6 @@ public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_generator")
     @SequenceGenerator(name = "account_generator", sequenceName = "account_id_seq", allocationSize=1)
-
     private Long id;
 
     private String email;

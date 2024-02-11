@@ -1,12 +1,10 @@
 package pl.kotzur.zast.model.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.time.LocalTime;
 
 @Entity
@@ -15,6 +13,8 @@ import java.time.LocalTime;
 public class Hour {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hour_generator")
+    @SequenceGenerator(name = "hour_generator", sequenceName = "hour_id_seq", allocationSize=1)
     private long id;
     private LocalTime startTime;
     private LocalTime endTime;
