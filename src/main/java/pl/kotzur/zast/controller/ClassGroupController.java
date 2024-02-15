@@ -1,5 +1,6 @@
 package pl.kotzur.zast.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
@@ -33,12 +34,12 @@ public class ClassGroupController {
     }
 
     @PostMapping
-    public ClassGroupFullDto addClassGroup(@RequestBody ClassGroupCreateDto dto) {
+    public ClassGroupFullDto addClassGroup(@RequestBody @Valid ClassGroupCreateDto dto) {
         return toDto(classGroupService.addClassGroup(toEntityCreate(dto)));
     }
 
     @PutMapping
-    public ClassGroupFullDto editClassGroup(@RequestBody ClassGroupFullDto dto) {
+    public ClassGroupFullDto editClassGroup(@RequestBody @Valid ClassGroupFullDto dto) {
         return toDto(classGroupService.editClassGroup(toEntityFull(dto)));
     }
 

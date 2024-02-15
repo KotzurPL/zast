@@ -1,11 +1,11 @@
 package pl.kotzur.zast.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.kotzur.zast.model.entity.Person;
-import pl.kotzur.zast.model.entity.Subject;
 import pl.kotzur.zast.repository.PersonRepository;
-import pl.kotzur.zast.repository.SubjectRepository;
 
 import java.util.List;
 
@@ -13,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PersonService {
 
+    private static final int PAGE_SIZE = 8;
     private final PersonRepository personRepository;
 
     public List<Person> getPersons() {
@@ -23,4 +24,9 @@ public class PersonService {
         return personRepository.getReferenceById(id);
     }
 
+    public List<Person> getTeachers(int page, Sort.Direction sort) {
+
+        return personRepository.findTeachers(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "last_name")));
+
+    }
 }
