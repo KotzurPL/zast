@@ -9,7 +9,7 @@ public record ClassGroupFullDto(
 
         int level,
 
-        @Length(min = 4, max = 10)
+        @Length(min = 1, max = 10)
         String symbol,
 
         ClassGroupTypeEnum type,

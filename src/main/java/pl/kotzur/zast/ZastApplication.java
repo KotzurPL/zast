@@ -18,8 +18,10 @@ public class ZastApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry corsRegistry) {
-                corsRegistry.addMapping("/*").allowedOrigins("http://localhost:5173");
-                corsRegistry.addMapping("/*/*").allowedOrigins("http://localhost:5173");
+                corsRegistry
+                        .addMapping("/**")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedOrigins("http://localhost:5173");
             }
         };
     }

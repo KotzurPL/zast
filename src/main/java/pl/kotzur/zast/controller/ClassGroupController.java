@@ -3,7 +3,10 @@ package pl.kotzur.zast.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.kotzur.zast.model.dto.ClassGroupCreateVirtualDto;
 import pl.kotzur.zast.model.dto.ClassGroupForListDto;
 import pl.kotzur.zast.model.dto.ClassGroupCreateDto;
 import pl.kotzur.zast.model.dto.ClassGroupFullDto;
@@ -24,7 +27,7 @@ public class ClassGroupController {
     @GetMapping
     public List<ClassGroupForListDto> getClassGroups(@RequestParam(required = false) Integer page, Sort.Direction sort) {
         int pageNumber = page != null && page >= 0 ? page : 0;
-        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
+        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.DESC;
         return toListDto(classGroupService.getClassGroups(pageNumber, sortDirection));
     }
 
@@ -34,8 +37,15 @@ public class ClassGroupController {
     }
 
     @PostMapping
-    public ClassGroupFullDto addClassGroup(@RequestBody @Valid ClassGroupCreateDto dto) {
-        return toDto(classGroupService.addClassGroup(toEntityCreate(dto)));
+    public ResponseEntity<ClassGroupFullDto> addClassGroup(@RequestBody @Valid ClassGroupCreateDto dto) {
+        ClassGroupFullDto response = toDto(classGroupService.addClassGroup(toEntityCreate(dto)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/virtual")
+    public ResponseEntity<ClassGroupFullDto> addVirtualClassGroup(@RequestBody @Valid ClassGroupCreateVirtualDto dto) {
+        ClassGroupFullDto response = toDto(classGroupService.addClassGroup(toEntityCreateVirtual(dto)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping

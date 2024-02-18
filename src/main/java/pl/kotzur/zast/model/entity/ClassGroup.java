@@ -25,4 +25,12 @@ public class ClassGroup {
 
     private int duration;
 
+    public String nameToString() {
+        String name = level + symbol;
+        if (type == ClassGroupTypeEnum.W) {
+            name += "x";
+        }
+        return name;
+    }
+
 }

@@ -1,5 +1,6 @@
 package pl.kotzur.zast.mapper;
 
+import pl.kotzur.zast.model.dto.ClassGroupCreateVirtualDto;
 import pl.kotzur.zast.model.dto.ClassGroupForListDto;
 import pl.kotzur.zast.model.dto.ClassGroupCreateDto;
 import pl.kotzur.zast.model.dto.ClassGroupFullDto;
@@ -17,13 +18,7 @@ public class ClassGroupMapper {
     public static List<ClassGroupForListDto> toListDto(List<ClassGroup> classes) {
         return classes
                 .stream()
-                .map(classGroup -> {
-                    String name = classGroup.getLevel() + classGroup.getSymbol();
-                    if (classGroup.getType() == ClassGroupTypeEnum.w) {
-                        name += "x";
-                    }
-                    return new ClassGroupForListDto(classGroup.getId(), name);
-                })
+                .map(classGroup -> new ClassGroupForListDto(classGroup.getId(), classGroup.nameToString()))
                 .collect(Collectors.toList());
     }
 
@@ -32,6 +27,16 @@ public class ClassGroupMapper {
         newClassGroup.setLevel(dto.level());
         newClassGroup.setSymbol(dto.symbol());
         newClassGroup.setType(dto.type());
+        newClassGroup.setActive(dto.active());
+        newClassGroup.setDuration(dto.duration());
+        return newClassGroup;
+    }
+
+    public static ClassGroup toEntityCreateVirtual(ClassGroupCreateVirtualDto dto) {
+        ClassGroup newClassGroup = new ClassGroup();
+        newClassGroup.setLevel(dto.level());
+        newClassGroup.setSymbol(dto.symbol());
+        newClassGroup.setType(ClassGroupTypeEnum.W);
         newClassGroup.setActive(true);
         newClassGroup.setDuration(4);
         return newClassGroup;
