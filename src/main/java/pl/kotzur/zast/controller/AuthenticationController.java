@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.kotzur.zast.auth.AuthenticationRequest;
 import pl.kotzur.zast.auth.AuthenticationResponse;
+import pl.kotzur.zast.auth.ChangePasswordRequest;
 import pl.kotzur.zast.auth.RegisterRequest;
 import pl.kotzur.zast.service.AuthenticationService;
 
@@ -26,6 +27,11 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest authenticationRequest) {
         return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        return ResponseEntity.ok(authenticationService.changePassword(changePasswordRequest));
     }
 
 }

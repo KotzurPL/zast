@@ -1,5 +1,6 @@
 package pl.kotzur.zast.mapper;
 
+import pl.kotzur.zast.model.dto.SubstitutionCreateDto;
 import pl.kotzur.zast.model.dto.SubstitutionForListDto;
 import pl.kotzur.zast.model.dto.SubstitutionFullDto;
 import pl.kotzur.zast.model.entity.Substitution;
@@ -39,6 +40,12 @@ public class SubstitutionMapper {
                 substitution.getSubstituteTeacher().getId(),
                 substitution.getTargetSubject().getId()
         );
+    }
+
+    public static Substitution toEntityCreate(SubstitutionCreateDto dto) {
+        Substitution newSubstitution = new Substitution();
+
+        return newSubstitution;
     }
 
     private static String teachersToString(Substitution substitution) {

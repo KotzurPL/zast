@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.kotzur.zast.auth.AuthenticationRequest;
 import pl.kotzur.zast.auth.AuthenticationResponse;
+import pl.kotzur.zast.auth.ChangePasswordRequest;
 import pl.kotzur.zast.auth.RegisterRequest;
 import pl.kotzur.zast.config.JwtService;
 import pl.kotzur.zast.model.entity.Account;
@@ -69,5 +70,9 @@ public class AuthenticationService {
                 .builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    public Object changePassword(ChangePasswordRequest changePasswordRequest) {
+        throw new RuntimeException();
     }
 }

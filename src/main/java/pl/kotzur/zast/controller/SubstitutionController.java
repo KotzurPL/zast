@@ -1,14 +1,19 @@
 package pl.kotzur.zast.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.kotzur.zast.model.dto.SubstitutionForListDto;
-import pl.kotzur.zast.model.dto.SubstitutionFullDto;
+import pl.kotzur.zast.mapper.ClassGroupMapper;
+import pl.kotzur.zast.mapper.SubstitutionMapper;
+import pl.kotzur.zast.model.dto.*;
 import pl.kotzur.zast.service.SubstitutionService;
 
 import java.util.List;
 
+import static pl.kotzur.zast.mapper.SubstitutionMapper.toEntityCreate;
 import static pl.kotzur.zast.mapper.SubstitutionMapper.toFullDto;
 import static pl.kotzur.zast.mapper.SubstitutionMapper.toListDto;
 
@@ -29,6 +34,12 @@ public class SubstitutionController {
     @GetMapping("/{id}")
     public SubstitutionFullDto getSingleSubstitution(@PathVariable Long id) {
         return toFullDto(substitutionService.getSingleSubstitution(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<SubstitutionFullDto> addSubstitution(@RequestBody @Valid SubstitutionCreateDto dto) {
+        SubstitutionFullDto response = SubstitutionMapper.toFullDto(substitutionService.addSubstitution(toEntityCreate(dto)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 }

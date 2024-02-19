@@ -23,4 +23,8 @@ public class SubstitutionService {
     public Substitution getSingleSubstitution(Long id) {
         return substitutionRepository.findById(id).orElseThrow();
     }
+
+    public Substitution addSubstitution(Substitution substitution) {
+        return substitutionRepository.save(substitution);
+    }
 }
