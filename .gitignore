@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/database/06-data-person.sql
+/src/main/resources/database/16-data-student.sql
+/src/main/resources/application.properties
