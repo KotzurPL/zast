@@ -38,19 +38,19 @@ public class ClassGroupController {
 
     @PostMapping
     public ResponseEntity<ClassGroupFullDto> addClassGroup(@RequestBody @Valid ClassGroupCreateDto dto) {
-        ClassGroupFullDto response = toDto(classGroupService.addClassGroup(toEntityCreate(dto)));
+        ClassGroupFullDto response = toFullDto(classGroupService.addClassGroup(toEntityCreate(dto)));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/virtual")
     public ResponseEntity<ClassGroupFullDto> addVirtualClassGroup(@RequestBody @Valid ClassGroupCreateVirtualDto dto) {
-        ClassGroupFullDto response = toDto(classGroupService.addClassGroup(toEntityCreateVirtual(dto)));
+        ClassGroupFullDto response = toFullDto(classGroupService.addClassGroup(toEntityCreateVirtual(dto)));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping
     public ClassGroupFullDto editClassGroup(@RequestBody @Valid ClassGroupFullDto dto) {
-        return toDto(classGroupService.editClassGroup(toEntityFull(dto)));
+        return toFullDto(classGroupService.editClassGroup(toEntityFull(dto)));
     }
 
     @DeleteMapping("/{id}")

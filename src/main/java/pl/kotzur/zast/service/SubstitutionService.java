@@ -20,4 +20,7 @@ public class SubstitutionService {
         return substitutionRepository.findAllSubstitutions(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
     }
 
+    public Substitution getSingleSubstitution(Long id) {
+        return substitutionRepository.findById(id).orElseThrow();
+    }
 }

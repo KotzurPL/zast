@@ -2,15 +2,14 @@ package pl.kotzur.zast.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.kotzur.zast.model.dto.SubstitutionForListDto;
+import pl.kotzur.zast.model.dto.SubstitutionFullDto;
 import pl.kotzur.zast.service.SubstitutionService;
 
 import java.util.List;
 
+import static pl.kotzur.zast.mapper.SubstitutionMapper.toFullDto;
 import static pl.kotzur.zast.mapper.SubstitutionMapper.toListDto;
 
 @RestController
@@ -25,6 +24,11 @@ public class SubstitutionController {
         int pageNumber = page != null && page >= 0 ? page : 0;
         Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.DESC;
         return toListDto(substitutionService.getSubstitutions(pageNumber, sortDirection));
+    }
+
+    @GetMapping("/{id}")
+    public SubstitutionFullDto getSingleSubstitution(@PathVariable Long id) {
+        return toFullDto(substitutionService.getSingleSubstitution(id));
     }
 
 }

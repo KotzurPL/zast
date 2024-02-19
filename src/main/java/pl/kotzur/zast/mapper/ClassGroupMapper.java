@@ -53,7 +53,7 @@ public class ClassGroupMapper {
         return newClassGroup;
     }
 
-    public static ClassGroupFullDto toDto(ClassGroup classGroup) {
+    public static ClassGroupFullDto toFullDto(ClassGroup classGroup) {
         return new ClassGroupFullDto(
                 classGroup.getId(),
                 classGroup.getLevel(),

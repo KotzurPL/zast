@@ -1,6 +1,7 @@
 package pl.kotzur.zast.mapper;
 
 import pl.kotzur.zast.model.dto.SubstitutionForListDto;
+import pl.kotzur.zast.model.dto.SubstitutionFullDto;
 import pl.kotzur.zast.model.entity.Substitution;
 
 import java.util.List;
@@ -18,13 +19,26 @@ public class SubstitutionMapper {
                 .map(substitution -> new SubstitutionForListDto(
                             substitution.getId(),
                             substitution.getSubstitutionDate(),
-                            substitution.getHour().toStringForSubstitutionList(),
+                            substitution.getHour().toStringForList(),
                             substitution.getClassGroup().nameToString(),
                             teachersToString(substitution),
                             subjectsToString(substitution)
                     )
                 )
                 .collect(Collectors.toList());
+    }
+
+    public static SubstitutionFullDto toFullDto(Substitution substitution) {
+        return new SubstitutionFullDto(
+                substitution.getId(),
+                substitution.getSubstitutionDate(),
+                substitution.getAbsentTeacher().getId(),
+                substitution.getHour().getId(),
+                substitution.getClassGroup().getId(),
+                substitution.getOriginalSubject().getId(),
+                substitution.getSubstituteTeacher().getId(),
+                substitution.getTargetSubject().getId()
+        );
     }
 
     private static String teachersToString(Substitution substitution) {

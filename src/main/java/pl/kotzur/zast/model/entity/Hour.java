@@ -19,8 +19,8 @@ public class Hour {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    public String toStringForSubstitutionList() {
-        return "" + id + ": " + startTime;
+    public String toStringForList() {
+        return "" + id + ": " + startTime + "-" + endTime;
     }
 
 }
