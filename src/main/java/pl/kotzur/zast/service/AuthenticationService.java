@@ -16,6 +16,7 @@ import pl.kotzur.zast.repository.AccountRepository;
 import pl.kotzur.zast.repository.PersonRepository;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -73,6 +74,16 @@ public class AuthenticationService {
     }
 
     public Object changePassword(ChangePasswordRequest changePasswordRequest) {
+        String email = changePasswordRequest.email();
+        Optional<Account> account = accountRepository.findByEmail(email);
+        boolean haveAccount = account.isPresent();
+        boolean isNewPasswordTheSame = changePasswordRequest.newPassword()
+                .equals(changePasswordRequest.confirmedPassword());
+        //boolean isOldPasswordCorrect = authenticationManager.authenticate(new );
+        if (haveAccount && isNewPasswordTheSame) {
+
+        }
+
         throw new RuntimeException();
     }
 }

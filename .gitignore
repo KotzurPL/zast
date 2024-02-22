@@ -33,4 +33,5 @@ build/
 .vscode/
 /src/main/resources/database/06-data-person.sql
 /src/main/resources/database/16-data-student.sql
-/src/main/resources/application.properties
+/src/main/resources/application-dev.properties
+/src/main/resources/application-prod.properties
