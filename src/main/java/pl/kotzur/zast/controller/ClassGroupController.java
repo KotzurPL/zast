@@ -24,6 +24,11 @@ public class ClassGroupController {
 
     private final ClassGroupService classGroupService;
 
+    @GetMapping("/all")
+    public List<ClassGroupForListDto> getAllClassGroups() {
+        return toListDto(classGroupService.getClassGroups());
+    }
+
     @GetMapping
     public List<ClassGroupForListDto> getClassGroups(@RequestParam(required = false) Integer page, Sort.Direction sort) {
         int pageNumber = page != null && page >= 0 ? page : 0;

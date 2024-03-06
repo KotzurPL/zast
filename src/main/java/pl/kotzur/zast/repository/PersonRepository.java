@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.kotzur.zast.model.entity.Person;
+import pl.kotzur.zast.model.entity.Role;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +21,5 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
                     "left join person_role pr on pr.id_person = p.id " +
                  "WHERE id_role = 4", nativeQuery = true)
     List<Person> findTeachers(Pageable pageable);
+
 }

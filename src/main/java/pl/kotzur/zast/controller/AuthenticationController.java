@@ -2,14 +2,8 @@ package pl.kotzur.zast.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pl.kotzur.zast.auth.AuthenticationRequest;
-import pl.kotzur.zast.auth.AuthenticationResponse;
-import pl.kotzur.zast.auth.ChangePasswordRequest;
-import pl.kotzur.zast.auth.RegisterRequest;
+import org.springframework.web.bind.annotation.*;
+import pl.kotzur.zast.auth.*;
 import pl.kotzur.zast.service.AuthenticationService;
 
 @RestController
@@ -21,17 +15,24 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest) {
-        return ResponseEntity.ok(authenticationService.register(registerRequest));
+        authenticationService.register(registerRequest);
+        return ResponseEntity.created(null).build();
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
-        return ResponseEntity.ok(authenticationService.changePassword(changePasswordRequest));
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        authenticationService.changeOwnPassword(changePasswordRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/userDetails")
+    public ResponseEntity<UserDetailsResponse> getUserDetails() {
+        return ResponseEntity.ok(authenticationService.getUserDetails());
     }
 
 }

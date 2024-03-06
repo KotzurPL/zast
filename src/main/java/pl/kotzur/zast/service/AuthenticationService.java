@@ -5,13 +5,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.kotzur.zast.auth.AuthenticationRequest;
-import pl.kotzur.zast.auth.AuthenticationResponse;
-import pl.kotzur.zast.auth.ChangePasswordRequest;
-import pl.kotzur.zast.auth.RegisterRequest;
+import pl.kotzur.zast.auth.*;
 import pl.kotzur.zast.config.JwtService;
 import pl.kotzur.zast.model.entity.Account;
 import pl.kotzur.zast.model.entity.Person;
+import pl.kotzur.zast.model.entity.Role;
 import pl.kotzur.zast.repository.AccountRepository;
 import pl.kotzur.zast.repository.PersonRepository;
 
@@ -43,10 +41,12 @@ public class AuthenticationService {
                     .person(person.get())
                     .build();
             accountRepository.save(account);
-            var jwtToken = jwtService.generateToken(account);
+            var jwtAccessToken = jwtService.generateAccessToken(account);
+            var jwtRefreshToken = jwtService.generateRefreshToken(account);
             return AuthenticationResponse
                     .builder()
-                    .token(jwtToken)
+                    .accessToken(jwtAccessToken)
+                    .refreshToken(jwtRefreshToken)
                     .build();
         }
         throw new NoSuchElementException("Person not found or have account!");
@@ -66,24 +66,52 @@ public class AuthenticationService {
         var account = accountRepository
                 .findByEmail(authenticationRequest.getEmail())
                 .orElseThrow();
-        var jwtToken = jwtService.generateToken(account);
+        var jwtAccessToken = jwtService.generateAccessToken(account);
+        var jwtRefreshToken = jwtService.generateRefreshToken(account);
         return AuthenticationResponse
                 .builder()
-                .token(jwtToken)
+                .accessToken(jwtAccessToken)
+                .refreshToken(jwtRefreshToken)
                 .build();
     }
 
-    public Object changePassword(ChangePasswordRequest changePasswordRequest) {
+    public Object changeOwnPassword(ChangePasswordRequest changePasswordRequest) {
         String email = changePasswordRequest.email();
-        Optional<Account> account = accountRepository.findByEmail(email);
-        boolean haveAccount = account.isPresent();
+        String oldPassword = changePasswordRequest.oldPassword();
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, oldPassword)
+        );
+        Optional<Account> optionalAccount = accountRepository.findByEmail(email);
+        boolean haveAccount = optionalAccount.isPresent();
         boolean isNewPasswordTheSame = changePasswordRequest.newPassword()
                 .equals(changePasswordRequest.confirmedPassword());
-        //boolean isOldPasswordCorrect = authenticationManager.authenticate(new );
-        if (haveAccount && isNewPasswordTheSame) {
+        boolean changeOwnPassword = AuthUtils.getAccount().getEmail().equals(email);
 
+        if (haveAccount && isNewPasswordTheSame && changeOwnPassword) {
+            Account account = optionalAccount.get();
+            account.setPassword(passwordEncoder.encode(changePasswordRequest.newPassword()));
+            accountRepository.save(account);
         }
 
-        throw new RuntimeException();
+
+        return null;
+    }
+
+    public UserDetailsResponse getUserDetails() {
+        Account account = AuthUtils.getAccount();
+        String email = account.getEmail();
+        Account accountDB = accountRepository.findByEmail(email).get();
+        return new UserDetailsResponse(
+                accountDB.getEmail(),
+                accountDB.isActive(),
+                accountDB.getPerson().getFirstName(),
+                accountDB.getPerson().getSecondName(),
+                accountDB.getPerson().getLastName(),
+                accountDB.getPerson().getShortName(),
+                accountDB.getPerson().getRoles()
+                        .stream()
+                        .map(role -> role.getShortName().toString())
+                        .toList()
+        );
     }
 }

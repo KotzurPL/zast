@@ -17,6 +17,10 @@ public class ClassGroupService {
     private static final int PAGE_SIZE = 8;
     private final ClassGroupRepository classGroupRepository;
 
+    public List<ClassGroup> getClassGroups() {
+        return classGroupRepository.findAll();
+    }
+
     public List<ClassGroup> getClassGroups(int page, Sort.Direction sort) {
         return classGroupRepository.findAllClassGroups(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
     }
